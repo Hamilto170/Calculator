@@ -1,61 +1,89 @@
-<!DOCTYPE HTML>
-
-<head>
-   <title>Calculadora Consumo Rejunte Inkor</title>
-   <img src="logo.png" alt="some text" width=310 height=75> 
-   <meta charset = "UTF-8">
-    <br/>
-    <font style="font-family:fantasy"size="12" >
-    <p>CALCULADORA&nbsp;&nbsp;CONSUMO&nbsp;&nbsp;DE&nbsp;&nbsp;REJUNTE</p> </font>
-    <pre>
-</head> 
-<body>
-<font size="6" color="Black"> <b>Insira as medidas abaixo:</b>
-
-<form action="" method="post">
-<font size="6 " color="red"> <b>Área da Peça</b></font>
-
-    <font size="5" color="black"> <b>Largura em cm:</b>  <input type="text" name="lar" style="width:90px; height:25px;"><br> </font>
-    <font size="5" color="black"> <b>Comprimento em cm:</b> <input type="text" name="comp" style="width:90px; height:25px;"><br> </font>
-    <font size="5" color="black"> <b>Metros Quadrados de Assentamento M²:</b> <input type="text" name="mqa" style="width:90px; height:25px;"><br> </font>          
-<font size="6" color="red"> <b>Dimensões da Junta</b></font> 
- 
-    <font size="5" color="black"> <b>Profundidade: Conforme tabela 1:</b> <input type="text" name="prof" style="width:90px; height:25px;"><br> </font>
-    <font size="5" color="black"> <b>Largura da fuga em mm:</b> <input type="text" name="laf" style="width:90px; height:25px;"><br> </font>
-<font size="6" color="red"> <b>Tipo de Rejunte</b></font>
-    
-    <font size="5" color="black"> <b>Coeficientes: Conforme tabela 2:</b> <input type="text" name="coef" style="width:90px; height:25px;"><br> </font> 
- <input type="submit" style="width: 110px; height: 35px; background-color:#fa0000; font-family:sans-serif "name="total" value="CALCULAR">
-   </form>
-    <font size="6" style="background-color:#fa0000"> <b>TABELA 1</b> </font>                    <font size="6" style="background-color:#fa0000"> <b>TABELA 2</b> </font>
-          
-    <font size="5"> <b>PROFUNDIDADE</b>                          <b>COEFICIENTES</b>
-                                    
-      <b>PISO</b>:8                                 <b>REJUNTE</b>:1.75
-      <b>PORCELANATO</b>:8                          <b>HIPER</b>:1.75
-      <b>PASTILHA</b>:4                             <b>HIPER PLUS</b>:1.75
-      <b>PEDRA</b>:MEDIR                            <b>RESIKOR</b>:2.54
-                                             <b>ACRILICO</b>:1.58
-       <pre>
-      
 <?php
-  
-          
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+
   $lar = isset($_POST['lar']) ? $_POST['lar'] : '';
   $total = isset($_POST['total']) ? $_POST['total'] : '';
   $comp = isset($_POST['comp']) ? $_POST['comp'] : '';
   $prof = isset($_POST['prof']) ? $_POST['prof'] : '';
   $laf = isset($_POST['laf']) ? $_POST['laf'] : '';
-  $coef = isset($_POST['coef']) ? $_POST['coef'] : '';
-  $mqa = isset($_POST['mqa']) ? $_POST['mqa'] : '';   
-   
-    if( !empty($total) ) {
-     if ($total == 'CALCULAR')
-    {
-        $total = (((($lar * 10) + ($comp * 10)) * $prof * $laf * $coef) / ($lar * $comp * 100)) * $mqa;
+  $mqa = isset($_POST['mqa']) ? $_POST['mqa'] : '';
+
+if (!empty($total)) {
+    if ($total == 'Calcular') {
+            $total_ = (((($lar * 10) + ($comp * 10)) * $prof * $laf * 1.58) / ($lar * $comp * 100)) * $mqa;
+        $total = round($total_, 2);
+
     }
 }
-            
-          echo "<b><font size='6'> O resultado do Consumo é $total KG</font></b>;";
-?>       
+?>
+<br>
+<body>
+ <p style="font-size: xx-large">CALCULADORA DE CONSUMO</p>
+  <form action="" method="post">
+      <link rel="stylesheet" href="calc.css">
+    <table style="width:100%">
+
+
+        <tr>
+            <td>Comprimento da Cerâmica</td>
+            <td><input type="text"pattern="^\d+(,\d{1,2cm})?$" required name="comp"
+                     placeholder="cm"
+                       style="width:100px; height:25px;"></td>
+        </tr>
+        <tr>
+            <td>Largura da Cerâmica</td>
+            <td><input type="text"pattern="^\d+(,\d{1,2cm})?$" required  name="lar"
+                       placeholder="cm"
+                       style="width:100px; height:25px;"></td>
+        </tr>
+        <tr>
+            <td>Largura da Fuga</td>
+            <td><input type="text"pattern="^\d+(,\d{1,2mm})?$" required name="laf"
+                       placeholder="mm"
+                       style="width:100px; height:25px;"></td>
+        </tr>
+        <tr>
+            <td>Área de Assentamento</td>
+            <td><input type="text"pattern="^\d+(,\d{1,2m²})?$" required name="mqa"
+                       placeholder="m²"
+                       style="width:100px; height:25px;"></td>
+
+        </tr>
+        <tr>
+            <td>Qual sua Peça?</td>
+            <td><select name="prof">
+                    <option value="">Selecione</option>
+                    <option value="8">Piso</option>
+                    <option value="8">Porcelanato</option>
+                    <option value="4">Pastilha</option>
+                    <option value="10"><b>Pedra</b></option>
+                </select></td>
+        </tr>
+        <tr>
+            <td>
+                <button
+                    class="calculate_consumption btn-block btn-primary button js-form-submit form-submit btn"
+                    data-drupal-selector="edit-submit" type="submit" id="edit-submit" name="total"
+                    value="Calcular">Calcular
+                </button>
+            </td>
+            <td style="font-size: xx-large">
+                <?php
+       echo "$total (KG)";
+                ?>
+            </td>
+        </tr>
+    </table>
+    <br>
+</form>
 </body>
+<script>
+    <?php
+    if ($_POST['lar']) {
+        echo "setTimeout(1, GoDown())";
+    }
+    ?>
+    function GoDown() {
+        window.scrollTo(0, document.body.scrollHeight + 25);
+    }
+</script>
